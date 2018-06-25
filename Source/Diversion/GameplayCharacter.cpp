@@ -2,7 +2,10 @@
 
 #include "GameplayCharacter.h"
 #include "Engine/Engine.h"
+#include "Runtime/Engine/Classes/Components/SceneComponent.h"
 #include "GameFramework/CharacterMovementComponent.h"
+
+#define OUT
 
 // Sets default values
 AGameplayCharacter::AGameplayCharacter()
@@ -24,6 +27,13 @@ void AGameplayCharacter::BeginPlay()
 {
 	Super::BeginPlay();
 	
+	TArray<USceneComponent*>sccenecomp;
+
+	GetComponents<USceneComponent>(OUT sccenecomp);
+	for (auto scnee : sccenecomp)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("%s"), *scnee->GetName());
+	}
 }
 
 // Called every frame
@@ -58,6 +68,7 @@ void AGameplayCharacter::MoveForward(float Value)
 	else
 	{
 		IsMoving = false;
+		
 	}
 }
 
@@ -68,6 +79,7 @@ void AGameplayCharacter::MoveRight(float Value)
 		IsMoving = true;
 		FVector Direction = FRotationMatrix(Controller->GetControlRotation()).GetScaledAxis(EAxis::Y);
 		AddMovementInput(Direction, Value);
+		
 	}
 	else
 	{
@@ -78,9 +90,13 @@ void AGameplayCharacter::MoveRight(float Value)
 
 void AGameplayCharacter::Aim()
 {
-	IsAiming = true;
-	bUseControllerRotationYaw = true;
-	GetCharacterMovement()->bOrientRotationToMovement = false;
+	if (GetCharacterMovement()->IsFalling() == false)
+	{
+		IsAiming = true;
+		bUseControllerRotationYaw = true;
+		GetCharacterMovement()->bOrientRotationToMovement = false;
+	}
+	
 }
 
 void AGameplayCharacter::AimReleased()
@@ -92,3 +108,19 @@ void AGameplayCharacter::AimReleased()
 }
 
 
+void AGameplayCharacter::Spawn()
+{
+
+	if (ToSpawn)
+	{
+		UWorld* world = GetWorld();
+
+		if (world)
+		{
+
+			
+
+		}
+	}
+
+}

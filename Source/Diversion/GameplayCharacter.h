@@ -4,6 +4,8 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
+#include "BulletRifle.h"
+#include "Runtime/Engine/Classes/Components/SceneComponent.h"
 #include "GameplayCharacter.generated.h"
 
 UCLASS()
@@ -43,4 +45,14 @@ public:
 
 	UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = PublicVars)
 	bool IsMoving = false;
+
+	UPROPERTY(EditAnywhere)
+	TSubclassOf<class ABulletRifle> ToSpawn;
+
+	UFUNCTION(BlueprintCallable)
+	void Spawn();
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite)
+	FVector loc;
+	
 };
